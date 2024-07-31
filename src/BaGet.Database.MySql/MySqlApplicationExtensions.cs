@@ -2,6 +2,7 @@ using System;
 using BaGet.Core;
 using BaGet.Database.MySql;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -15,7 +16,7 @@ namespace BaGet
             {
                 var databaseOptions = provider.GetRequiredService<IOptionsSnapshot<DatabaseOptions>>();
 
-                options.UseMySql(databaseOptions.Value.ConnectionString);
+                options.UseMySql(ServerVersion.AutoDetect(databaseOptions.Value.ConnectionString), _ => { });
             });
 
             return app;
