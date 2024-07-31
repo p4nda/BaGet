@@ -40,7 +40,7 @@ namespace BaGet.Core
         public string Language { get; set; }
         public bool Listed { get; set; }
         public string MinClientVersion { get; set; }
-        public DateTime Published { get; set; }
+        public DateTimeOffset Published { get; set; }
         public bool RequireLicenseAcceptance { get; set; }
         public SemVerLevel SemVerLevel { get; set; }
         public string Summary { get; set; }

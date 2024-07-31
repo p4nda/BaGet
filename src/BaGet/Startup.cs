@@ -2,9 +2,7 @@ using System;
 using BaGet.Core;
 using BaGet.Web;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,20 +22,10 @@ namespace BaGet
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO: Ideally we'd use:
-            //
-            //       services.ConfigureOptions<ConfigureBaGetOptions>();
-            //
-            //       However, "ConfigureOptions" doesn't register validations as expected.
-            //       We'll instead register all these configurations manually.
-            // See: https://github.com/dotnet/runtime/issues/38491
-            services.AddTransient<IConfigureOptions<CorsOptions>, ConfigureBaGetOptions>();
-            services.AddTransient<IConfigureOptions<FormOptions>, ConfigureBaGetOptions>();
-            services.AddTransient<IConfigureOptions<ForwardedHeadersOptions>, ConfigureBaGetOptions>();
-            services.AddTransient<IConfigureOptions<IISServerOptions>, ConfigureBaGetOptions>();
-            services.AddTransient<IValidateOptions<BaGetOptions>, ConfigureBaGetOptions>();
+            // Ideally we'd use:
+            services.ConfigureOptions<ConfigureBaGetOptions>();
 
-            services.AddBaGetOptions<IISServerOptions>(nameof(IISServerOptions));
+            //services.AddBaGetOptions<IISServerOptions>(nameof(IISServerOptions));
             services.AddBaGetWebApplication(ConfigureBaGetApplication);
 
             // You can swap between implementations of subsystems like storage and search using BaGet's configuration.

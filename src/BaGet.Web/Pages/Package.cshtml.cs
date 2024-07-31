@@ -47,7 +47,7 @@ namespace BaGet.Web
 
         public bool IsDotnetTemplate { get; private set; }
         public bool IsDotnetTool { get; private set; }
-        public DateTime LastUpdated { get; private set; }
+        public DateTimeOffset LastUpdated { get; private set; }
         public long TotalDownloads { get; private set; }
 
         public IReadOnlyList<PackageDependent> UsedBy { get; set; }
@@ -232,7 +232,7 @@ namespace BaGet.Web
             public NuGetVersion Version { get; set; }
             public long Downloads { get; set; }
             public bool Selected { get; set; }
-            public DateTime LastUpdated { get; set; }
+            public DateTimeOffset LastUpdated { get; set; }
         }
     }
 }

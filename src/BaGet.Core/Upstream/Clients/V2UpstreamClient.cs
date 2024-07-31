@@ -141,7 +141,7 @@ namespace BaGet.Core
                 Language = null,
                 Listed = package.IsListed,
                 MinClientVersion = null,
-                Published = package.Published?.UtcDateTime ?? DateTime.MinValue,
+                Published = package.Published?.UtcDateTime ?? DateTimeOffset.MinValue,
                 RequireLicenseAcceptance = package.RequireLicenseAcceptance,
                 Summary = package.Summary,
                 Title = package.Title,

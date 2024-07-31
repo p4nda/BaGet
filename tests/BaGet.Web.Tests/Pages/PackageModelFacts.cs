@@ -250,6 +250,9 @@ namespace BaGet.Web.Tests
 
         [Theory]
         [InlineData(null, "All Frameworks")]
+        [InlineData("net8.0", ".NET 8.0")]
+        [InlineData("net7.0", ".NET 7.0")]
+        [InlineData("net6.0", ".NET 6.0")]
         [InlineData("net5.0", ".NET 5.0")]
         [InlineData("netstandard2.1", ".NET Standard 2.1")]
         [InlineData("netcoreapp3.1", ".NET Core 3.1")]

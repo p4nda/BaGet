@@ -34,7 +34,7 @@ namespace BaGet.Azure
                 Language = package.Language,
                 Listed = package.Listed,
                 MinClientVersion = package.MinClientVersion,
-                Published = package.Published,
+                Published = package.Published.UtcDateTime,
                 RequireLicenseAcceptance = package.RequireLicenseAcceptance,
                 SemVerLevel = (int)package.SemVerLevel,
                 Summary = package.Summary,

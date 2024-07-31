@@ -35,7 +35,7 @@ namespace BaGet.Web
         public string Framework { get; set; } = "any";
 
         [BindProperty(SupportsGet = true)]
-        public bool Prerelease { get; set; } = true;
+        public bool Prerelease { get; set; } = false;
 
         public IReadOnlyList<SearchResult> Packages { get; private set; }
 
