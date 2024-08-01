@@ -13,7 +13,7 @@ A lightweight [NuGet] and [symbol] server.
 1. Install the [.NET SDK]
 2. Download and extract [BaGet's latest release]
 3. Start the service with `dotnet BaGet.dll`
-4. Browse `http://localhost:5000/` in your browser
+4. Browse `https://localhost:8401/` in your browser
 
 For more information, please refer to the [documentation].
 

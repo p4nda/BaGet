@@ -59,9 +59,11 @@ namespace BaGet
 
             app.OnExecuteAsync(async cancellationToken =>
             {
-                //TODO: Disable migrations after initial setup
-                await host.RunMigrationsAsync(cancellationToken);
-
+                // Do not run migrations if not requested
+                if (bool.TryParse(Environment.GetEnvironmentVariable("RUN_MIGRATIONS"), out var runMigrations) && runMigrations)
+                {
+                    await host.RunMigrationsAsync(cancellationToken);
+                }
                 // Start the HTTP server and listen for incoming requests
                 await host.RunAsync(cancellationToken);
             });
@@ -84,6 +86,11 @@ namespace BaGet
                 .CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((ctx, config) =>
                 {
+                    // If BAGET_CONFIG_ROOT is not set, the configuration system defaults to looking
+                    // for appsettings.json in the directory where the application is executed
+                    // Configure this path as a VOLUME mount inside Docker container
+                    // -v /home/service-baget/config:/home/baget/config:z,ro
+                    // and put appsettings.json to the host config directory
                     var root = Environment.GetEnvironmentVariable("BAGET_CONFIG_ROOT");
                     if (!string.IsNullOrEmpty(root)) config.SetBasePath(root);
                 })
