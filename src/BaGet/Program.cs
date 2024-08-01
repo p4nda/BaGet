@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using BaGet.Core;
 using BaGet.Web;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace BaGet
 {
@@ -14,11 +17,22 @@ namespace BaGet
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            if (!host.ValidateStartupOptions())
-            {
-                return;
-            }
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 | SecurityProtocolType.Tls12;
+            var baseDirectory = AppContext.BaseDirectory;
+            var logPath = Path.Combine(baseDirectory, "@logs", "baget-.log");
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            var host = CreateHostBuilder(args, logger)
+                .UseContentRoot(AppContext.BaseDirectory)
+                .ConfigureAppConfiguration((_, config) => config.SetBasePath(AppContext.BaseDirectory))
+                .Build();
+
+            if (!host.ValidateStartupOptions()) return;
 
             var app = new CommandLineApplication
             {
@@ -34,12 +48,9 @@ namespace BaGet
                 {
                     downloads.OnExecuteAsync(async cancellationToken =>
                     {
-                        using (var scope = host.Services.CreateScope())
-                        {
-                            var importer = scope.ServiceProvider.GetRequiredService<DownloadsImporter>();
-
-                            await importer.ImportAsync(cancellationToken);
-                        }
+                        using var scope = host.Services.CreateScope();
+                        var importer = scope.ServiceProvider.GetRequiredService<DownloadsImporter>();
+                        await importer.ImportAsync(cancellationToken);
                     });
                 });
             });
@@ -48,35 +59,38 @@ namespace BaGet
 
             app.OnExecuteAsync(async cancellationToken =>
             {
+                //TODO: Disable migrations after initial setup
                 await host.RunMigrationsAsync(cancellationToken);
+
+                // Start the HTTP server and listen for incoming requests
                 await host.RunAsync(cancellationToken);
             });
 
+            // Process command-line arguments and execute specific commands
             await app.ExecuteAsync(args);
+
+            // Log unhandled exceptions
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                var ex = (Exception)e.ExceptionObject;
+                Log.Fatal(ex, "Unhandled exception occured");
+                Log.CloseAndFlush();
+            };
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] args, ILogger logger)
         {
             return Host
                 .CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((ctx, config) =>
                 {
                     var root = Environment.GetEnvironmentVariable("BAGET_CONFIG_ROOT");
-
-                    if (!string.IsNullOrEmpty(root))
-                    {
-                        config.SetBasePath(root);
-                    }
+                    if (!string.IsNullOrEmpty(root)) config.SetBasePath(root);
                 })
+                .UseSerilog(logger)
                 .ConfigureWebHostDefaults(web =>
                 {
-                    web.ConfigureKestrel(options =>
-                    {
-                        // Remove the upload limit from Kestrel. If needed, an upload limit can
-                        // be enforced by a reverse proxy server, like IIS.
-                        options.Limits.MaxRequestBodySize = null;
-                    });
-
+                    web.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 30000000);
                     web.UseStartup<Startup>();
                 });
         }
