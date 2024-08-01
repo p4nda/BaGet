@@ -3,6 +3,7 @@ using BaGet.Core;
 using BaGet.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +74,10 @@ namespace BaGet
                 app.UseStatusCodePages();
             }
 
-            app.UseForwardedHeaders();
+            // Use HTTPS by default
+            app.UseHttpsRedirection();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.All});
             app.UsePathBase(options.PathBase);
 
             app.UseStaticFiles();
