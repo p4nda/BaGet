@@ -115,6 +115,7 @@ namespace BaGet
                     config.AddKeyPerFile("/run/secrets", optional: true);
                 })
                 .UseSerilog(logger)
+                .UseContentRoot(baseDirectory)
                 .ConfigureWebHostDefaults(web =>
                 {
                     web.UseUrls("http://*:8080", "https://*:8081");
