@@ -111,9 +111,7 @@ namespace BaGet
                     $"Allowed values: {string.Join(", ", ValidSearchTypes)}");
             }
 
-            if (failures.Any()) return ValidateOptionsResult.Fail(failures);
-
-            return ValidateOptionsResult.Success;
+            return failures.Count != 0 ? ValidateOptionsResult.Fail(failures) : ValidateOptionsResult.Success;
         }
     }
 }
