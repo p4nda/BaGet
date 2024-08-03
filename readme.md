@@ -55,7 +55,8 @@ postgres=# CREATE EXTENSION citext
 
 ## Container
 ```bash
-podman run -d --rm --build-arg BUILD_TIMESTAMP=$(date +'%Y%m%d-%H%M') -p 8081:8081 \
+podman build --build-arg BUILD_TIMESTAMP=$(date +'%Y%m%d-%H%M') -t localhost/ndf-baget:latest -f ./Dockerfile
+podman run -d --rm -p 8081:8081 \
   -v /home/service-baget/cert:/app/cert:Z,ro \
   -v /home/service-baget/conf:/home/baget/conf:Z,ro \
   -v /home/service-baget/logs:/home/baget/logs:Z,rw \
