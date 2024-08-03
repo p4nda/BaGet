@@ -14,7 +14,7 @@
 
   <!-- Compiler properties -->
   <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <LangVersion>default</LangVersion>
 
     <!-- Don't warn if there are missing XMl comment for publicly visible type or member-->
@@ -23,7 +23,6 @@
 
   <!-- Debugging properties -->
   <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <DebugType>portable</DebugType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
@@ -42,10 +41,6 @@
     <MicrosoftExtensionsPackageVersion>8.*</MicrosoftExtensionsPackageVersion>
     <NuGetPackageVersion>6.*</NuGetPackageVersion>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(DOTNET_RUNNING_IN_CONTAINER)' == ''">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="../packageIcon.png" Pack="true" PackagePath="" Visible="false" />
