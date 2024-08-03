@@ -1,6 +1,6 @@
 # BaGet :baguette_bread:
 
-![Build status] [![Discord][Discord image]][Discord link] [![Twitter][Twitter image]][Twitter link]
+![Build status]
 
 A lightweight [NuGet] and [symbol] server.
 
@@ -13,7 +13,7 @@ A lightweight [NuGet] and [symbol] server.
 1. Install the [.NET SDK]
 2. Download and extract [BaGet's latest release]
 3. Start the service with `dotnet BaGet.dll`
-4. Browse `https://localhost:8401/` in your browser
+4. Browse `https://localhost:8081/` in your browser
 
 For more information, please refer to the [documentation].
 
@@ -26,10 +26,6 @@ For more information, please refer to the [documentation].
 Stay tuned, more features are planned!
 
 [Build status]: https://img.shields.io/github/actions/workflow/status/loic-sharma/BaGet/.github/workflows/main.yml
-[Discord image]: https://img.shields.io/discord/889377258068930591
-[Discord link]: https://discord.gg/MWbhpf66mk
-[Twitter image]: https://img.shields.io/twitter/follow/bagetapp?label=Follow
-[Twitter link]: https://twitter.com/bagetapp
 
 [NuGet]: https://learn.microsoft.com/nuget/what-is-nuget
 [symbol]: https://docs.microsoft.com/en-us/windows/desktop/debug/symbol-servers-and-symbol-stores
@@ -46,3 +42,32 @@ Stay tuned, more features are planned!
 [Alibaba Cloud]: https://loic-sharma.github.io/BaGet/installation/aliyun/
 
 [Mirror a NuGet server]: https://loic-sharma.github.io/BaGet/configuration/#enable-read-through-caching
+
+## PostgreSQL
+```bash
+postgres=# CREATE USER baget_user WITH PASSWORD '...';
+postgres=# CREATE DATABASE baget_db OWNER baget_user ENCODING 'UTF8';
+postgres=# GRANT ALL PRIVILEGES ON DATABASE baget_db TO baget_user;
+postgres=# \c baget_db
+postgres=# CREATE EXTENSION citext
+# Add user to pg_hba.conf
+```
+
+## Container
+```bash
+podman run -d --rm --build-arg BUILD_TIMESTAMP=$(date +'%Y%m%d-%H%M') -p 8081:8081 \
+  -v /home/service-baget/cert:/app/cert:Z,ro \
+  -v /home/service-baget/conf:/home/baget/conf:Z,ro \
+  -v /home/service-baget/logs:/home/baget/logs:Z,rw \
+  -v /mnt/baget/packages:/home/baget/packages:Z,rw \
+  localhost/ndf-baget:latest
+```
+
+## TLS Setup
+
+1. Create baget.pfx from crt, key and Root CA
+2. Check Program.cs
+
+```bash
+openssl pkcs12 -export -out baget.pfx -inkey baget.key -in baget.crt -certfile baget.Root_CA.crt
+```
