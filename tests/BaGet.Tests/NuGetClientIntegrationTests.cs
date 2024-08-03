@@ -34,7 +34,7 @@ namespace BaGet.Tests
             _client = _app.CreateDefaultClient();
             _packageStream = TestResources.GetResourceStream(TestResources.Package);
 
-            var sourceUri = new Uri(_app.Server.BaseAddress, "v3/index.json");
+            var sourceUri = new Uri("https://localhost:8081/v3/index.json");
             var packageSource = new PackageSource(sourceUri.AbsoluteUri);
             var providers = new List<Lazy<INuGetResourceProvider>>();
 

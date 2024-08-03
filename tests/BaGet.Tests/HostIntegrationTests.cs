@@ -46,6 +46,8 @@ namespace BaGet.Tests
                 { ConnectionStringKey, "..." }
             });
 
+            var sqliteContext = provider.GetRequiredService<SqliteContext>();
+
             Assert.NotNull(provider.GetRequiredService<SqliteContext>());
         }
 
@@ -62,7 +64,7 @@ namespace BaGet.Tests
         private IServiceProvider BuildServiceProvider(Dictionary<string, string> configs = null)
         {
             var host = Program
-                .CreateHostBuilder(new string[0], null)
+                .CreateHostBuilder([], null, null, null, null)
                 .ConfigureAppConfiguration((ctx, config) =>
                 {
                     config.AddInMemoryCollection(configs ?? new Dictionary<string, string>());

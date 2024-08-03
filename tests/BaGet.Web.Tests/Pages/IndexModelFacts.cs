@@ -33,7 +33,7 @@ namespace BaGet.Web.Tests
 
             Assert.Equal(0, _capturedRequest.Skip);
             Assert.Equal(20, _capturedRequest.Take);
-            Assert.True(_capturedRequest.IncludePrerelease);
+            Assert.False(_capturedRequest.IncludePrerelease);
             Assert.True(_capturedRequest.IncludeSemVer2);
             Assert.Null(_capturedRequest.PackageType);
             Assert.Null(_capturedRequest.Framework);

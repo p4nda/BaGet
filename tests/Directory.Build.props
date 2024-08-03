@@ -7,7 +7,6 @@
 
   <PropertyGroup>
     <DebugType>portable</DebugType>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <!-- NuGet dependencies shared across projects -->

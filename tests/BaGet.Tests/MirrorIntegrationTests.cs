@@ -38,7 +38,7 @@ namespace BaGet.Tests
             Assert.Equal(@"{
   ""@context"": {
     ""@vocab"": ""http://schema.nuget.org/schema#"",
-    ""@base"": ""http://localhost/v3/registration""
+    ""@base"": ""https://localhost:8081/v3/registration""
   },
   ""totalHits"": 0,
   ""data"": []
@@ -89,7 +89,7 @@ namespace BaGet.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(@"{
-  ""@id"": ""http://localhost/v3/registration/testdata/index.json"",
+  ""@id"": ""https://localhost:8081/v3/registration/testdata/index.json"",
   ""@type"": [
     ""catalog:CatalogRoot"",
     ""PackageRegistration"",
@@ -98,14 +98,14 @@ namespace BaGet.Tests
   ""count"": 1,
   ""items"": [
     {
-      ""@id"": ""http://localhost/v3/registration/testdata/index.json"",
+      ""@id"": ""https://localhost:8081/v3/registration/testdata/index.json"",
       ""count"": 1,
       ""lower"": ""1.2.3"",
       ""upper"": ""1.2.3"",
       ""items"": [
         {
-          ""@id"": ""http://localhost/v3/registration/testdata/1.2.3.json"",
-          ""packageContent"": ""http://localhost/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
+          ""@id"": ""https://localhost:8081/v3/registration/testdata/1.2.3.json"",
+          ""packageContent"": ""https://localhost:8081/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
           ""catalogEntry"": {
             ""downloads"": 0,
             ""hasReadme"": false,
@@ -126,7 +126,7 @@ namespace BaGet.Tests
             ""licenseUrl"": """",
             ""listed"": true,
             ""minClientVersion"": """",
-            ""packageContent"": ""http://localhost/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
+            ""packageContent"": ""https://localhost:8081/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
             ""projectUrl"": """",
             ""published"": ""2020-01-01T00:00:00Z"",
             ""requireLicenseAcceptance"": false,
@@ -153,15 +153,15 @@ namespace BaGet.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(@"{
-  ""@id"": ""http://localhost/v3/registration/testdata/1.2.3.json"",
+  ""@id"": ""https://localhost:8081/v3/registration/testdata/1.2.3.json"",
   ""@type"": [
     ""Package"",
     ""http://schema.nuget.org/catalog#Permalink""
   ],
   ""listed"": true,
-  ""packageContent"": ""http://localhost/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
+  ""packageContent"": ""https://localhost:8081/v3/package/testdata/1.2.3/testdata.1.2.3.nupkg"",
   ""published"": ""2020-01-01T00:00:00Z"",
-  ""registration"": ""http://localhost/v3/registration/testdata/index.json""
+  ""registration"": ""https://localhost:8081/v3/registration/testdata/index.json""
 }", json);
         }
 

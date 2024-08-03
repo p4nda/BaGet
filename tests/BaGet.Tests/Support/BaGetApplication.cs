@@ -65,7 +65,7 @@ namespace BaGet.Tests
                         { "Storage:Path", storagePath },
                         { "Search:Type", "Database" },
                         { "Mirror:Enabled", _upstreamClient != null ? "true": "false" },
-                        { "Mirror:PackageSource", "http://localhost/v3/index.json" },
+                        { "Mirror:PackageSource", "https://localhost:8081/v3/index.json" },
                     });
                 })
                 .ConfigureServices((context, services) =>
