@@ -25,6 +25,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TestData.resx</DependentUpon>
     </Compile>
+    <Compile Remove="HostIntegrationTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

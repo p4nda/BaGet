@@ -64,7 +64,8 @@ namespace BaGet
                     // app.AddSqlServerDatabase();
                     break;
                 default: // "Sqlite"
-                    app.AddSqliteDatabase();
+                    // Required for tests, removing the dependency for prod build
+                    // app.AddSqliteDatabase();
                     break;
             }
 
