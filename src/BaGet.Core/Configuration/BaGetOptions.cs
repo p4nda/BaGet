@@ -19,7 +19,7 @@ namespace BaGet.Core
         /// If enabled, the database will be updated at app startup by running
         /// Entity Framework migrations. This is not recommended in production.
         /// </summary>
-        public bool RunMigrationsAtStartup { get; set; } = true;
+        public bool RunMigrationsAtStartup { get; set; } = false;
 
         /// <summary>
         /// How BaGet should interpret package deletion requests.
