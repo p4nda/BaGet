@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using BaGet.Protocol.Internal;
 
 namespace BaGet.Protocol.Models
 {
     /// <summary>
     /// A package's metadata.
-    /// 
+    ///
     /// See https://docs.microsoft.com/en-us/nuget/api/registration-base-url-resource#catalog-entry
     /// </summary>
     public class PackageMetadata
@@ -118,6 +119,7 @@ namespace BaGet.Protocol.Models
         /// The package's tags.
         /// </summary>
         [JsonPropertyName("tags")]
+        [JsonConverter(typeof(StringOrStringArrayJsonConverter))]
         public IReadOnlyList<string> Tags { get; set; }
 
         /// <summary>

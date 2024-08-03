@@ -18,6 +18,8 @@ namespace BaGet.Core
     {
         private readonly NuGetClient _client;
         private readonly ILogger<V3UpstreamClient> _logger;
+        private static readonly char[] AuthorSeparator = [',', ';', '\t', '\n', '\r'];
+        private static readonly char[] TagSeparator = [' '];
 
         public V3UpstreamClient(NuGetClient client, ILogger<V3UpstreamClient> logger)
         {
@@ -111,7 +113,7 @@ namespace BaGet.Core
                 RepositoryUrl = null,
                 RepositoryType = null,
                 SemVerLevel = version.IsSemVer2 ? SemVerLevel.SemVer2 : SemVerLevel.Unknown,
-                Tags = metadata.Tags?.ToArray() ?? Array.Empty<string>(),
+                Tags = ParseTags(metadata.Tags),
 
                 Dependencies = ToDependencies(metadata)
             };
@@ -129,13 +131,19 @@ namespace BaGet.Core
             return uri;
         }
 
-        private string[] ParseAuthors(string authors)
+        private static string[] ParseAuthors(string authors)
         {
             if (string.IsNullOrEmpty(authors)) return Array.Empty<string>();
 
-            return authors
-                .Split(new[] { ',', ';', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(a => a.Trim())
+            return authors.Split(AuthorSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
+        private static string[] ParseTags(IEnumerable<string> tags)
+        {
+            if (tags is null) return Array.Empty<string>();
+
+            return tags
+                .SelectMany(t => t.Split(TagSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                 .ToArray();
         }
 

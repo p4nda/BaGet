@@ -157,7 +157,7 @@ namespace BaGet.Core
             return query.Where(p => p.Id.ToLower().Contains(search));
         }
 
-        private IQueryable<Package> ApplySearchFilters(
+        private static IQueryable<Package> ApplySearchFilters(
             IQueryable<Package> query,
             bool includePrerelease,
             bool includeSemVer2,

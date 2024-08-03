@@ -61,9 +61,7 @@ else
             </div>
 
             @{
-                ExpandableSection(
-                    "Readme",
-                    expanded: false,
+                ExpandableSection("Readme", "ms-Icon--Dictionary", expanded: false,
                     @<div>
                         @if (Model.Readme == null)
                         {
@@ -78,7 +76,7 @@ else
 
             @if (!Model.IsDotnetTemplate && !Model.IsDotnetTool)
             {
-                ExpandableSection("Used By", expanded: false,
+                ExpandableSection("Used By", "ms-Icon--BranchFork2", expanded: false,
                     @<div class="package-used-by">
                         @if (!Model.UsedBy.Any())
                         {
@@ -118,36 +116,34 @@ else
 
             @if (!string.IsNullOrEmpty(Model.Package.ReleaseNotes))
             {
-                ExpandableSection("Release Notes", expanded: false,
+                ExpandableSection("Release Notes", "ms-Icon--ReadingMode", expanded: false,
                     @<div class="package-release-notes">@Model.Package.ReleaseNotes</div>);
             }
 
-            @{ ExpandableSection(
-                "Dependencies",
-                expanded: false,
-                @<div class="dependency-groups">
+            @{ ExpandableSection("Dependencies", "ms-Icon--Packages", expanded: false,
+                   @<div class="dependency-groups">
                     @if (!Model.DependencyGroups.Any())
-                    {
-                        @:This package has no dependencies.
-                    }
-                    else
-                    {
-                        foreach (var group in Model.DependencyGroups)
-                        {
-                            <h4>
+                   {
+                       @:This package has no dependencies.
+                   }
+                   else
+                   {
+                       foreach (var group in Model.DependencyGroups)
+                       {
+                           <h4>
                                 <span>@group.Name</span>
                             </h4>
 
-                            <ul class="list-unstyled dependency-group">
+                           <ul class="list-unstyled dependency-group">
                                 @if (!group.Dependencies.Any())
-                                {
-                                    <li>No dependencies.</li>
-                                }
-                                else
-                                {
-                                    @foreach (var dependency in group.Dependencies)
-                                    {
-                                        <li>
+                           {
+                               <li>No dependencies.</li>
+                           }
+                           else
+                           {
+                               @foreach (var dependency in group.Dependencies)
+                               {
+                                   <li>
                                             <a asp-page="Package"
                                                asp-route-id="@dependency.PackageId"
                                                asp-route-version="@null">
@@ -156,16 +152,16 @@ else
 
                                             <span> @dependency.VersionSpec</span>
                                         </li>
-                                    }
-                                }
+                               }
+                           }
                             </ul>
-                        }
-                    }
+                       }
+                   }
                 </div>);
             }
 
-            @{ ExpandableSection("Versions", expanded: true,
-                @<div class="version-list" x-data="{ showAll: false }">
+            @{ ExpandableSection("Versions", "ms-Icon--Stopwatch", expanded: true,
+                   @<div class="version-list" x-data="{ showAll: false }">
                     <table class="table borderless">
                         <thead>
                             <tr>
@@ -176,26 +172,26 @@ else
                         </thead>
                         <tbody class="no-border">
                             @for (var i = 0; i < Model.Versions.Count; i++)
-                            {
-                                var version = Model.Versions[i];
-                                var alwaysShow = Json.Serialize(i < DefaultVisibleVersions);
+                   {
+                       var version = Model.Versions[i];
+                       var alwaysShow = Json.Serialize(i < DefaultVisibleVersions);
 
-                                <tr class="@(version.Selected ? "bg-info" : "")" x-show="showAll || @alwaysShow">
+                       <tr class="@(version.Selected ? "bg-info" : "")" x-show="showAll || @alwaysShow">
                                     <td><a asp-page="Package" asp-route-version="@version.Version">@version.Version.ToNormalizedString()</a></td>
                                     <td>@version.Downloads.ToString("N0")</td>
                                     <td>@version.LastUpdated.ToString("yyyy-MM-dd")</td>
                                 </tr>
-                            }
+                   }
                         </tbody>
                     </table>
 
                     @if (Model.Versions.Count > DefaultVisibleVersions)
-                    {
-                        <button type="button" class="link-button" @@click="showAll = !showAll">
+                   {
+                       <button type="button" class="link-button" @@click="showAll = !showAll">
                             <i class="ms-Icon" x-bind:class="{ 'ms-Icon--CalculatorAddition': !showAll, 'ms-Icon--CalculatorSubtract': showAll }"></i>
                             <span x-text="showAll ? 'Show less' : 'Show more'"></span>
                         </button>
-                    }
+                   }
 
                 </div>);
             }
@@ -327,7 +323,7 @@ else
 
     private const int DefaultVisibleVersions = 5;
 
-    private void ExpandableSection(string title, bool expanded, Func<object, IHtmlContent> template)
+    private void ExpandableSection(string title, string icon, bool expanded, Func<object, IHtmlContent> template)
     {
         <div class="expandable-section" x-data="{ expanded: @Json.Serialize(expanded) }">
             <h2>
