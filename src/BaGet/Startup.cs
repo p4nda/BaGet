@@ -45,15 +45,33 @@ namespace BaGet
 
         private void ConfigureBaGetApplication(BaGetApplication app)
         {
-            // Add database providers.
-            // app.AddAzureTableDatabase();
-            // app.AddMySqlDatabase();
-            // app.AddPostgreSqlDatabase();
-            app.AddSqliteDatabase();
-            // app.AddSqlServerDatabase();
+            // Add database provider.
+            // Not including references to not used db projects
+            // Sqlite is required for original tests to pass
+            var dbType = Configuration["Database:Type"];
+            switch (dbType)
+            {
+                case "AzureTable":
+                    // app.AddAzureTableDatabase();
+                    break;
+                case "MySql":
+                    // app.AddMySqlDatabase();
+                    break;
+                case "PostgreSql":
+                    app.AddPostgreSqlDatabase();
+                    break;
+                case "SqlServer":
+                    // app.AddSqlServerDatabase();
+                    break;
+                default: // "Sqlite"
+                    app.AddSqliteDatabase();
+                    break;
+            }
 
-            // Add storage providers.
+            // Add storage provider.
             app.AddFileStorage();
+
+            // Cloud projects not referenced
             // app.AddAliyunOssStorage();
             // app.AddAwsS3Storage();
             // app.AddAzureBlobStorage();
