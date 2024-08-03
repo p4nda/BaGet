@@ -2,13 +2,12 @@
   "profiles": {
     "BaGet": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
-        "RUN_MIGRATIONS": "true",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
       },
-      "applicationUrl": "https://localhost:8401;http://localhost:8400"
+      "applicationUrl": "https://localhost:8081;http://localhost:8080",
+      "launchBrowser": true
     }
   }
 }
